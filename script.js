@@ -1,41 +1,26 @@
-// ===== REC BUTTON TOGGLE =====
-const recBtn = document.getElementById("recBtn");
-let isRecording = false;
+// Scroll Reveal
+const reveals = document.querySelectorAll(".reveal");
 
-recBtn.addEventListener("click", function(){
-    isRecording = !isRecording;
-
-    if(isRecording){
-        recBtn.style.background = "white";
-        recBtn.style.color = "black";
-    }else{
-        recBtn.style.background = "red";
-        recBtn.style.color = "white";
+window.addEventListener("scroll", () => {
+  reveals.forEach(el => {
+    const windowHeight = window.innerHeight;
+    const elementTop = el.getBoundingClientRect().top;
+    if (elementTop < windowHeight - 100) {
+      el.classList.add("active");
     }
+  });
 });
 
-// ===== DRAW MOCK WAVEFORM =====
-const canvas = document.getElementById("waveCanvas");
-const ctx = canvas.getContext("2d");
+// Magnetic Button
+const btn = document.querySelector(".modern-btn");
 
-function resizeCanvas(){
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-}
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
+btn.addEventListener("mousemove", e => {
+  const rect = btn.getBoundingClientRect();
+  const x = e.clientX - rect.left - rect.width / 2;
+  const y = e.clientY - rect.top - rect.height / 2;
+  btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+});
 
-function drawWave(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    const mid = canvas.height/2;
-
-    for(let i=0;i<canvas.width;i+=5){
-        const height = Math.random()*100;
-        ctx.fillStyle="white";
-        ctx.fillRect(i, mid-height/2, 2, height);
-    }
-}
-
-setInterval(drawWave, 500);
-
+btn.addEventListener("mouseleave", () => {
+  btn.style.transform = "translate(0,0)";
+});
